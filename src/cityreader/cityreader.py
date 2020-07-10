@@ -1,6 +1,17 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
 
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+
+  def __str__(self):
+    return f"Name: {self.name}, Latitude: {self.lat}, Longitude: {self.lon}"
+
+  def __repr__(self):
+    return f"Name: {self.name}, Latitude: {self.lat}, Longitude: {self.lon}"
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -14,18 +25,25 @@
 #
 # Note that the first line of the CSV is header that describes the fields--this
 # should not be loaded into a City object.
+
+import csv
+
 cities = []
 
-def cityreader(cities=[]):
-  # TODO Implement the functionality to read from the 'cities.csv' file
-  # For each city record, create a new City instance and add it to the 
-  # `cities` list
-    
-    return cities
+def cityreader():
 
-cityreader(cities)
+  with open("cities.csv", "r") as f:
+    next(f)
+    for line in f:
+      line = line.split(",")
+      cities.append(City(line[0], line[3], line[4]))
+      
+  return cities
+
+cityreader()
 
 # Print the list of cities (name, lat, lon), 1 record per line.
+
 for c in cities:
     print(c)
 
@@ -60,12 +78,35 @@ for c in cities:
 
 # TODO Get latitude and longitude values from the user
 
+# pair1 = input("Enter your first latitude-longitude pair separated by a comma. -> ").strip().split(",")
+# pair2 = input("Enter your second latitude-longitude pair separated by a comma. -> ").strip().split(",")
+
+# min_lat = min(pair1[0], pair2[0])
+# max_lat = max(pair1[0], pair2[0])
+# min_lon = min(pair1[1], pair2[1])
+# max_lon = max(pair1[1], pair2[1])
+
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
   within = []
+
+  # lat1 = float(pair1[0])
+  # lon1 = float(pair1[1])
+  # lat2 = float(pair2[0])
+  # lon2 = float(pair2[1])
+
+  min_lat = min(lat1, lat2)
+  max_lat = max(lat1, lat2)
+  min_lon = min(lon1, lon2)
+  max_lon = max(lon1, lon2)
+
+  for city in cities:
+    if (min_lat <= float(getattr(city, "lat")) <= max_lat) and (min_lon <= float(getattr(city, "lon")) <= max_lon):
+      within.append(city)
 
   # TODO Ensure that the lat and lon valuse are all floats
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
   return within
+
